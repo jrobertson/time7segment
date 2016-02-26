@@ -13,10 +13,13 @@ require 'rpi'
 # 7 seg pin: 11  7  4  2   1  10  5   3
 #  GPIO pin: 11  4 23  8  20  10 18  25
 
+# Hex values used:
+#        https://en.wikipedia.org/wiki/Seven-segment_display#Displaying_letters
+
 
 class Time7Segment
 
-  #                      d1 d2 d3 d4  a b  c d e   f  g dp
+  #                           d1 d2 d3 d4  a b  c d e   f  g dp
   def initialize(gpio_pins=%w(22 27 17 24 11 4 23 8 20 10 18 25), 
                                                         refresh: 0.0025)
 
@@ -34,8 +37,8 @@ class Time7Segment
       Time.now.strftime("%H%M").chars.each.with_index do |x,i|
 
         display(x.to_i)
-        @digits[i].on
         @segments[7].method( i == 1 ? :off : :on).call
+        @digits[i].on
         sleep @refresh
         @digits[i].off
 
