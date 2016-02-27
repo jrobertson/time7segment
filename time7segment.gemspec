@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'time7segment'
-  s.version = '0.1.1'
+  s.version = '0.1.2'
   s.summary = 'Displays the time on a 4 digit 7 segment display connected to a Raspberry Pi.'
   s.authors = ['James Robertson']
   s.files = Dir['lib/time7segment.rb']
