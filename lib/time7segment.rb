@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'rpi'
+require 'simple_raspberrypi'
 
 
 # file: time7segment.rb
@@ -28,9 +28,9 @@ require 'rpi'
 class Time7Segment
 
   #                      d1 d2 d3 d4  a b  c d  e  f  g dp
-  def initialize(gpio=%w(22 27 17 24 11 4 23 8 20 10 18 25), refresh: 0.0045)
+  def initialize(gpio=%w(22 27 17 24 11 4 23 8 20 10 18 25), refresh: 0.0055)
 
-    pins = RPi.new(gpio).pins
+    pins = SimpleRaspberryPi.new(gpio).pins
     @digits, @segments, @refresh = pins.take(4), pins.slice(4..-1), refresh
     
     a = [0x7E, 0x30, 0x6D, 0x79, 0x33, 0x5B, 0x5F, 0x70, 0x7F, 0x7B]
