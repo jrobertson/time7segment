@@ -28,7 +28,7 @@ require 'simple_raspberrypi'
 class Time7Segment
 
   #                      d1 d2 d3 d4  a b  c d  e  f  g dp
-  def initialize(gpio=%w(22 27 17 24 11 4 23 8 20 10 18 25), refresh: 0.0055)
+  def initialize(gpio=%w(22 27 17 24 11 4 23 8 20 10 18 25), refresh: 0.005)
 
     pins = SimpleRaspberryPi.new(gpio).pins
     @digits, @segments, @refresh = pins.take(4), pins.slice(4..-1), refresh
@@ -46,9 +46,21 @@ class Time7Segment
     loop do
 
       Time.now.strftime("%H%M").chars.each.with_index do |x,i|
+        
+        n = x.to_i
+        display(n); @segments[7].method( i == 1 ? :off : :on).call
+        @digits[i].on
 
-        display(x.to_i); @segments[7].method( i == 1 ? :off : :on).call
-        @digits[i].on; sleep @refresh; @digits[i].off
+        refresh = @refresh
+        
+        # reduce the sleep time for digit 1 since it takes less time to 
+        # update the segments. This gives a more balanced brightness display,
+        # especially for digits 0 and 8
+
+        refresh -= refresh / 2 if n == 1
+        sleep refresh
+
+        @digits[i].off
 
       end
 
@@ -70,4 +82,3 @@ end
 
 if __FILE__ == $0 then
   Time7Segment.new(*ARGV).start
-end
