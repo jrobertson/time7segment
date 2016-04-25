@@ -82,3 +82,4 @@ end
 
 if __FILE__ == $0 then
   Time7Segment.new(*ARGV).start
+end
